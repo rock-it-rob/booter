@@ -29,7 +29,7 @@ public class Index
     public ResponseEntity<String> get() throws JsonProcessingException
     {
         final HashMap<String, String> map = new HashMap<>();
-        map.put("status", "peachy");
+        map.put("status", "nasty message");
         final String result = objectMapper.writeValueAsString(map);
 
         return ResponseEntity.status(Response.SC_OK).body(result);

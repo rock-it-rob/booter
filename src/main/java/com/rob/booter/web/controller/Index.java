@@ -16,11 +16,11 @@ import java.util.HashMap;
  */
 @RestController
 @RequestMapping("/")
-public class IndexController
+public class Index
 {
     private final ObjectMapper objectMapper;
 
-    public IndexController()
+    public Index()
     {
         objectMapper = new ObjectMapper();
     }

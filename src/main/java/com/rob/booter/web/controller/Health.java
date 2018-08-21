@@ -15,21 +15,21 @@ import java.util.HashMap;
  * @author Rob Benton
  */
 @RestController
-@RequestMapping("/")
-public class IndexController
+@RequestMapping("/health")
+public class Health
 {
     private final ObjectMapper objectMapper;
 
-    public IndexController()
+    public Health()
     {
-        objectMapper = new ObjectMapper();
+        this.objectMapper = new ObjectMapper();
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> get() throws JsonProcessingException
     {
-        final HashMap<String, String> map = new HashMap<>();
-        map.put("status", "ok");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("status", "healthy");
         final String result = objectMapper.writeValueAsString(map);
 
         return ResponseEntity.status(Response.SC_OK).body(result);

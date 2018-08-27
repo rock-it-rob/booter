@@ -22,8 +22,6 @@
     h1 {
       font-size: 2em;
     }
-
-
   </style>
 
 </head>
@@ -38,9 +36,10 @@
 
 <script>
   $(document).ready(function() {
-    $('#ver').text('placeholder');
+    $.getJSON('/release', function(data) {
+      $('#ver').text(data.version);
+    });
   });
-
 </script>
 
 </html>

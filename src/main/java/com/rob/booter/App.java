@@ -22,7 +22,7 @@ public class App
      * @return {@link ReleaseVersion}
      */
     @Bean
-    public ReleaseVersion release()
+    public ReleaseVersion releaseVersion()
     {
         return () -> getClass().getPackage().getImplementationVersion();
     }

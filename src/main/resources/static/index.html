@@ -2,7 +2,15 @@
 <html>
 
 <head>
+
   <title>Welcome</title>
+
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+  </script>
+
   <style>
     * {
       font-family: sans-serif;
@@ -14,12 +22,25 @@
     h1 {
       font-size: 2em;
     }
+
+
   </style>
+
 </head>
 
 <body>
-  <h1>Home</h1>
-  <p>Welcome to the home page.</p>
+
+<h1>Home</h1>
+<p>Welcome to the home page.</p>
+<span>Application version:</span><span id="ver"></span>
+
 </body>
+
+<script>
+  $(document).ready(function() {
+    $('#ver').text('placeholder');
+  });
+
+</script>
 
 </html>

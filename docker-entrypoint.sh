@@ -1,6 +1,6 @@
 #!/bin/sh
 
-APP=${BINDIR}/${APPNAME}
+APP=${APPDIR}/${APPNAME}
 
 function run()
 {

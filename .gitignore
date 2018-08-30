@@ -4,3 +4,6 @@
 
 # Maven files
 /target/
+
+# Docker Compose files
+/.env

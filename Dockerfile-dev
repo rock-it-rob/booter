@@ -1,0 +1,25 @@
+FROM openjdk:8-alpine
+
+# The directory and name of the final output application.
+ENV APPDIR=/app
+ENV APPNAME=booter.jar
+
+# Use a volume for the application directory. The application will be built from maven outside of
+# the docker image build process.
+VOLUME $APPDIR
+
+# Expose the 8080 port which is where spring boot runs by default.
+EXPOSE 8080
+
+# Set the entrypoint.
+COPY docker-entrypoint.sh .
+RUN chmod 755 docker-entrypoint.sh
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
+
+# Set the healthcheck.
+COPY healthcheck.sh ./
+RUN chmod 755 healthcheck.sh
+HEALTHCHECK --timeout=2s CMD /healthcheck.sh
+
+# Add the necessary build tools.
+RUN apk add --no-cache curl

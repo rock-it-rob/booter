@@ -6,7 +6,7 @@
 
   <groupId>com.rob.booter</groupId>
   <artifactId>booter</artifactId>
-  <version>0.3.5</version>
+  <version>0.4.0</version>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -17,6 +17,7 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <output.dir>${project.build.directory}</output.dir>
   </properties>
 
   <dependencies>
@@ -44,6 +45,10 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${output.dir}</outputDirectory>
+          <finalName>${project.name}</finalName>
+        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -16,6 +16,7 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
 # Set the healthcheck.
 COPY healthcheck.sh ./
+RUN chmod 755 healthcheck.sh
 HEALTHCHECK --timeout=2s CMD /healthcheck.sh
 
 # Add the necessary build tools.

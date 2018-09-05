@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @author Rob Benton
  */
 @RestController
-@RequestMapping("/health")
+@RequestMapping(Health.URI)
 public class Health
 {
+    public static final String URI = "/health";
+
     @Autowired
     private ReleaseVersion releaseVersion;
 

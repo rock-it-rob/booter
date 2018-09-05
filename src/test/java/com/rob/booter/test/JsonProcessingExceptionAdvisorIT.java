@@ -1,8 +1,6 @@
 package com.rob.booter.test;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rob.booter.web.response.AbstractErrorResponse;
 import com.rob.booter.web.response.JsonErrorResponse;
 import com.rob.booter.web.response.entity.JsonErrorEntity;
 import org.junit.Test;
@@ -16,7 +14,6 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -34,6 +31,8 @@ public class JsonProcessingExceptionAdvisorIT
 {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+    private static final String INVALID_JSON = "{ \"test\": \"bad\", }";
+
     /**
      * Test configuration class that will load the necessary beans and configuration.
      */
@@ -46,26 +45,29 @@ public class JsonProcessingExceptionAdvisorIT
     @Autowired
     private TestRestTemplate restTemplate;
 
+    /**
+     * Test that an invalid json object invokes the exception handler of
+     * {@link com.rob.booter.web.advisor.JsonProcessingExceptionAdvisor}. The returned
+     * object in the response should be of type {@link JsonErrorResponse} and should
+     * contain a {@link JsonErrorEntity} with a non-null, non-empty message.
+     */
     @Test
-    public void testPost() throws IOException
+    public void testPost()
     {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-        final String badRequest = "{ \"test\": \"test\", }";
-        HttpEntity<String> entity = new HttpEntity<>(badRequest, headers);
+        HttpEntity<String> entity = new HttpEntity<>(INVALID_JSON, headers);
         ResponseEntity<JsonErrorResponse> response = restTemplate.postForEntity(
             DummyRestController.URI, entity, JsonErrorResponse.class
         );
-        /*
-        ResponseEntity<String> response = restTemplate.postForEntity(
-            DummyRestController.URI, entity, String.class
-        );
-        */
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        JsonErrorResponse errorResponse = response.getBody();
-        assertNotNull(errorResponse);
-        final String text = objectMapper.writeValueAsString(errorResponse);
-        System.out.println(text);
+        final JsonErrorResponse body = response.getBody();
+        assertNotNull(body);
+        final JsonErrorEntity errorEntity = body.getError();
+        assertNotNull(errorEntity);
+        final String msg = errorEntity.getMessage();
+        assertNotNull(msg);
+        assertNotEquals(0, msg.length());
     }
 
     /**

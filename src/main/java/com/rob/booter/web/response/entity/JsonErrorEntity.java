@@ -4,19 +4,20 @@ import com.fasterxml.jackson.core.JsonLocation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
+ * JsonErrorEntity defines the properties of an error that occurred while parsing JSON.
+ *
  * @author Rob Benton
  */
-public class JsonError extends AbstractErrorEntity
+public class JsonErrorEntity
 {
-    private static final String TYPE = "jsonError";
+    private int line;
+    private int column;
+    private String message;
 
-    private final int line;
-    private final int column;
-    private final String message;
+    public JsonErrorEntity() {}
 
-    public JsonError(JsonProcessingException e)
+    public JsonErrorEntity(JsonProcessingException e)
     {
-        super(TYPE);
         final JsonLocation jsonLocation = e.getLocation();
         line = jsonLocation.getLineNr();
         column = jsonLocation.getColumnNr();

@@ -3,7 +3,9 @@ package com.rob.booter.test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rob.booter.profiles.IntegrationTest;
 import com.rob.booter.web.controller.Health;
+import com.rob.booter.web.controller.Release;
 import com.rob.booter.web.response.HealthResponse;
+import com.rob.booter.web.response.ReleaseResponse;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,12 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.Assert.*;
 
 /**
- * RestResourceIT is an integration test suite for the spring MVC rest controllers.
+ * RestResourcesIT is an integration test suite for the spring MVC rest controllers.
  *
  * @author Rob Benton
  */
@@ -28,57 +29,55 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @ActiveProfiles(IntegrationTest.PROFILE)
 @AutoConfigureMockMvc
-public class RestResourceIT
+public class RestResourcesIT
 {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MockMvc mockMvc;
 
-    //@Autowired
-    //private TestRestTemplate restTemplate;
-
     /**
      * Tests the {@link Health} rest controller.
+     *
      * @throws Exception for any errors.
      */
     @Test
     public void testHealthController() throws Exception
     {
-        RequestBuilder requestBuilder =
-            MockMvcRequestBuilders.get(Health.URI);
-        mockMvc.perform(requestBuilder).andDo(mvcResult -> {
+        mockMvc.perform(MockMvcRequestBuilders.get(Health.URI)).andDo(mvcResult -> {
             MockHttpServletResponse response = mvcResult.getResponse();
             // Verify the status is a 200.
             assertEquals(HttpStatus.OK.value(), response.getStatus());
             // Obtain the response as a JSON POJO.
             final String body = response.getContentAsString();
-            HealthResponse entity = objectMapper.readValue(body, HealthResponse.class);
-            assertNotNull(entity);
+            HealthResponse healthResponse = objectMapper.readValue(body, HealthResponse.class);
+            assertNotNull(healthResponse);
             // Verify that healthy is true.
-            assertTrue(entity.isHealthy());
+            assertTrue(healthResponse.isHealthy());
             // Verify version number is not null.
-            assertNotNull(entity.getVersion());
+            assertNotNull(healthResponse.getVersion());
         });
     }
 
     /**
-     * Test that the {@link Health} resource returns a {@link HealthResponse} and
-     * that the status is healthy and the version is correct.
+     * Tests the {@link com.rob.booter.web.controller.Release} rest controller.
+     *
+     * @throws Exception for any errors.
      */
-    /*
     @Test
-    public void testHealth()
+    public void testReleaseController() throws Exception
     {
-        ResponseEntity<HealthResponse> response = restTemplate.getForEntity(
-            Health.URI, HealthResponse.class
-        );
-        assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        HealthResponse body = response.getBody();
-        assertNotNull(body);
-        assertTrue(body.isHealthy());
-        assertEquals(versionTest, body.getVersion());
+        mockMvc.perform(MockMvcRequestBuilders.get(Release.URI)).andDo(mvcResult -> {
+            MockHttpServletResponse response = mvcResult.getResponse();
+            // Verify the status is 200.
+            assertEquals(HttpStatus.OK.value(), response.getStatus());
+            // Obtain the response as a json POJO.
+            final String body = response.getContentAsString();
+            ReleaseResponse releaseResponse = objectMapper.readValue(body, ReleaseResponse.class);
+            assertNotNull(releaseResponse);
+            // Verify version is not empty.
+            assertNotNull(releaseResponse.getVersion());
+            assertNotEquals(0, releaseResponse.getVersion().length());
+        });
     }
-    */
 }

@@ -1,7 +1,5 @@
 package com.rob.booter.web.response;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 /**
  * HealthResponse is a reponse POJO for the health of the applicaiton.
  *
@@ -9,8 +7,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
  */
 public class HealthResponse
 {
-    private final boolean healthy;
-    private final String version;
+    private boolean healthy;
+    private String version;
+
+    public HealthResponse() {}
 
     /**
      * Constructor for creating response based on all fields.
@@ -18,7 +18,6 @@ public class HealthResponse
      * @param healthy whether or not the application is healthy.
      * @param version version number of the application.
      */
-    @JsonCreator
     public HealthResponse(boolean healthy, String version)
     {
         this.healthy = healthy;

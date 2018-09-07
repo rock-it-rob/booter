@@ -64,6 +64,9 @@
                 <version>2.20.1</version>
                 <configuration>
                     <trimStackTrace>false</trimStackTrace>
+                    <additionalClasspathElements>
+                        <classpathElement>${project.build.directory}/maven-archiver</classpathElement>
+                    </additionalClasspathElements>
                 </configuration>
                 <executions>
                     <execution>
